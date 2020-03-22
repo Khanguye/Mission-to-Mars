@@ -102,6 +102,74 @@ def mars_facts():
 
     return df.to_html() 
 ########################################################
+################# CHALLENGE CODES ######################
+########################################################
+# Domain URL is used to scrape Mars surface
+__DOMAIN_URL = 'https://astrogeology.usgs.gov'
+########################################################
+# scrape the Mars surface main function
+def scrape_mars_surfaces():
+    # Set the executable path and initialize the chrome browser in splinter
+    executable_path = {"executable_path": "chromedriver"}
+    browser = Browser("chrome", **executable_path)
+
+    # Scrapping mars surface data
+    title_href_list = find_title_href(browser)
+    data = find_highdef_image(browser, title_href_list)
+    
+    #turning off browser after this is done
+    browser.quit()
+
+    return data
+#########################################################
+# Find the title and follow link of each Mars surfaces
+def find_title_href(browser):
+    #Visit the main page
+    url = f'{__DOMAIN_URL}/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
+    browser.visit(url)
+    #Scrape title and follow url (href)
+    #Four sides of Mars
+    html = browser.html
+    soup = BeautifulSoup(html,'html.parser')
+    items = soup.find_all('div',class_='item')
+    #Declare a list to hold dictionary item
+    dicList = []
+    for item in items:
+        try:
+            dicItem  = {}
+            #get the title of Mars surface
+            dicItem["title"] = item.find('h3').text
+            #get the follow link url of Mars surface
+            dicItem["href"] =  item.find('a')["href"]
+            #add into the list
+            dicList.append(dicItem)
+        except AttributeError:
+            continue
+    return dicList
+########################################################   
+# find the high def images url from each follow href of each Mars Surface
+def find_highdef_image(browser, title_href_list):
+    #declare and assign dictionary list
+    dicList = title_href_list
+    #loop each dictionary item
+    for dicItem in dicList:
+        #Visit each Mars suface URL
+        browser.visit(f'{__DOMAIN_URL}{dicItem["href"]}')
+        #Use BeautifulSoup to parse html
+        html = browser.html
+        soup = BeautifulSoup(html,'html.parser')
+        try:
+            sample =  soup.find('div',class_='downloads').find_all('a')[0]["href"]
+            orginal = soup.find('div',class_='downloads').find_all('a')[1]["href"]
+        except AttributeError:
+            sample = ""
+            orginal = ""
+        #Add img_url 
+        dicItem['img_url_jpg'] = sample   
+        dicItem['img_url'] = orginal
+        #remove href
+        dicItem.pop('href')
+    return dicList
 
 
 if __name__ == "__main__":
