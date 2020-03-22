@@ -1,5 +1,5 @@
 # Mission to Mars
----
+
 
 **Summary:**
 ---
@@ -37,7 +37,7 @@ Implement scraping program to pull the high-resolution images, updating Mongo to
 3. [app.py](app.py)
 4. [/templates/index.html](/templates/index.html)
 
-**Screenshoots**
+**Screenshots**
 ---
 
 **Scrape website data and Store in Mongo DB**
