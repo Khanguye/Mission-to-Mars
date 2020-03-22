@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Mission to Mars</title>
+    <!-- <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    /> -->
+    <!-- Boostrap 4 is the lastest -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+    <style>
+        /* Simple Header Line */
+        .hero-image {
+          background-image: url(https://www.asc-csa.gc.ca/images/astronomie/mars/banner-mars.jpg);
+          background-repeat: no-repeat;
+          background-size: cover;
+        }
+        .hero-text {
+          color: #FFFFFF;
+        }
+    </style>
+  </head>
+
+  <body>
+    <!-- Header Session -->
+    <header>
+       <!-- Add Jumbotron to Header -->
+       <section class="jumbotron text-center hero-image">
+        <div class="container">
+          <h1 class="hero-text">Mission to Mars</h1>
+            <p><a class="btn btn-success btn-lg m-2" href="/scrape" role="button">Scrape New Data</a>
+            <a class="btn btn-danger btn-lg m-2" href="/mars/scrape" role="button">Scrape Mars Surface</a></p>
+        </div>
+      </section>
+    </header>
+    <!-- Main -->
+    <main role="main"> 
+      <div class="container">
+
+        <!-- The Later News -->
+        <div class="row" id="mars-news">
+          <div class="col-lg-12">
+            <div class="row media">
+              <div class="media-body">
+                <h2>Latest Mars News</h2>
+                <h4 class="media-heading">{{ mars.news_title }}</h4>
+                <p>{{ mars.news_paragraph }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+      <!-- Section for Featured Image and Facts table -->
+      <div class="row mt-4" id="mars-featured-image">
+        <div class="col-lg-8">
+          <!-- Header Text -->
+          <div class="row">
+            <h4>Featured Mars Images in different styles</h4>
+          </div>
+          <div class="row">
+            <a href="{{mars.featured_image | default('static/images/error.png', true) }}" 
+            target="_blank" class="btn btn-outline-primary">View Large Image</a>
+          </div>
+          <!-- Display in different styles -->
+          <div class="row mt-3"> 
+            <!-- if images is False/None/non-existent, then default to error message -->
+            <div class="col-lg-4">
+              <img
+              src="{{mars.featured_image | default('static/images/error.png', true) }}"
+              class="img-fluid rounded"
+              alt="Responsive image"
+            />
+            </div>
+            <div class="col-lg-4">
+              <img
+              src="{{mars.featured_image | default('static/images/error.png', true) }}"
+              class="img-fluid rounded-circle"
+              alt="Responsive image"
+            />
+            </div>
+            <div class="col-lg-4">
+              <img
+              src="{{mars.featured_image | default('static/images/error.png', true) }}"
+              class="img-fluid img-thumbnail"
+              alt="Responsive image"
+            />
+            </div>
+          </div>
+          
+          <!-- Mars Suface -->
+          <!-- Header Text -->
+          <div class="row mt-4">
+            <h4>Mars Hemispheres</h4>
+          </div>
+          <!-- Image Display -->
+          <div class="row" id="mars-surfaces">  
+              {% for surface in mars_surfaces %}
+              <div class="col-lg-3" style="padding:0;">
+                <div class="card" >
+                  <img src="{{surface.img_url_jpg}}" class="card-img-top" alt="{{surface.title}}">
+                  <div class="card-body">
+                    <p class="card-title">{{surface.title}}</p>
+                    <a href="{{surface.img_url}}" class="btn btn-primary">Download Image</a>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+          </div>
+        </div>
+       
+        <div class="col-lg-4">
+          <!-- Mars Facts -->
+          <div class="row" id="mars-facts">
+            <div class="col-lg-12">
+              <h4>Mars Facts</h4>
+              <!-- Format table for better view -->
+              {{ mars.facts
+                     .replace("dataframe","table-striped")
+                     .replace('<thead>\n    <tr style=\"text-align: right;\">\n      <th></th>\n      <th>value</th>\n    </tr>\n    <tr>\n      <th>description</th>\n      <th></th>\n    </tr>\n  </thead>\n'
+                     ,"<thead></thead><tr><th>Description</th><th>Value</th></tr></thead>") | safe }}
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="page-footer font-small blue">
+
+      <!-- Simple Disclaimer -->
+      <div class="footer-copyright text-center py-3">
+        © 2020 Disclaimer: Open source 
+        <br>
+        <a href="https://github.com/Khanguye/Mission-to-Mars">Kha.Nguyen GitHub</a>
+      </div>
+  
+    </footer>
+
+  </body>
+
+</html>
