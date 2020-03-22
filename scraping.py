@@ -175,6 +175,7 @@ def find_highdef_image(browser, title_href_list):
 if __name__ == "__main__":
     # If running as script, print scraped data
     print(scrape_all())
+    print(scrape_mars_surfaces())
 
 
 
