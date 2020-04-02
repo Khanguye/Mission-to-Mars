@@ -141,31 +141,6 @@
   
     </footer>
 
-     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.js"></script>
-    <script>
-      //var img1st = d3.select(".card img")
-      var imgAll = d3.selectAll(".card img")
-      var rotate = 20;
-      var rotateAcc = 0;
-      var eltxt = d3.select("#rotate");
-      d3.select("body").on("keydown", () => {
-         if (d3.event.keyCode == 76){
-          rotateAcc += rotate*(-1)
-         }
-         if (d3.event.keyCode == 82){
-          rotateAcc += rotate*(1)
-         }
-
-         if (d3.event.keyCode == 82 || d3.event.keyCode == 76){
-            //img1st.style("transform", "rotate("+ rotateAcc%360 +"deg)");
-            imgAll.nodes().forEach( el => d3.select(el).style("transform", "rotate("+ rotateAcc%360 +"deg)") )
-            console.log(rotateAcc);
-         }
-      
-      });
-    </script> 
-    
   </body>
 
 </html>
